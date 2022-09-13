@@ -28,6 +28,7 @@ build:
 	> '.build_state'
 	$(call build-image,./base/ubuntu,$(REPO):base-ubuntu,)
 	$(call build-image,./golang/1.18,$(REPO):golang-1.18,$(REPO):base-ubuntu)
+	$(call build-image,./golang/1.19,$(REPO):golang-1.19,$(REPO):base-ubuntu)
 	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu)
 .PHONY: build
 
