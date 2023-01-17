@@ -10,5 +10,5 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git make tar gzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    /tmp/download-file.sh https://go.dev/dl/go1.19.1.linux-amd64.tar.gz 'a69153393a2eaf1c2b77f5a4bafe6a2fb36368c6856d79bd697472af71d925fc62c58e6b8fe75adf143b0462da2ed9e68d0fcd0328cde091be70d745b92814aa' | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh https://go.dev/dl/go1.19.5.linux-amd64.tar.gz '41cb5e267aca9c3120bc218a81921e4ef1e1b8a5eeb609f82f697092a86fbfc252130a5b87794ce08a21c41f7926b0672273cf1b831d57208e8caaa18c5181bf' | tar -C /usr/local -xzf - && \
     rm -rf /tmp/*
