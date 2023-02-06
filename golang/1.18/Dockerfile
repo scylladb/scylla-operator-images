@@ -1,4 +1,4 @@
-FROM to-be-replaced-by-local-ref/base:ubuntu
+FROM to-be-replaced-by-local-ref/base:ubuntu-22.04
 
 ENV GOPATH=/go \
     GOROOT=/usr/local/go
