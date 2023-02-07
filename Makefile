@@ -18,6 +18,14 @@ define build-image
 
 endef
 
+# $1 - source
+# $2 - target
+define tag-image
+	podman tag '$(1)' '$(2)'
+	echo '$(2)' >> '.build_state'
+
+endef
+
 # $1 - tag (including repo URI)
 define publish-image
 	podman push '$(1)'
@@ -26,10 +34,13 @@ endef
 
 build:
 	> '.build_state'
-	$(call build-image,./base/ubuntu,$(REPO):base-ubuntu,)
-	$(call build-image,./golang/1.18,$(REPO):golang-1.18,$(REPO):base-ubuntu)
-	$(call build-image,./golang/1.19,$(REPO):golang-1.19,$(REPO):base-ubuntu)
-	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu)
+	$(call build-image,./base/ubuntu/20.04,$(REPO):base-ubuntu-20.04,)
+	# TODO: switch this to the latest release when we migrate scylla-operator to use an explicit version so Major upgrades go through CI
+	$(call tag-image,$(REPO):base-ubuntu-20.04,$(REPO):base-ubuntu)
+	$(call build-image,./base/ubuntu/22.04,$(REPO):base-ubuntu-22.04,)
+	$(call build-image,./golang/1.18,$(REPO):golang-1.18,$(REPO):base-ubuntu-22.04)
+	$(call build-image,./golang/1.19,$(REPO):golang-1.19,$(REPO):base-ubuntu-22.04)
+	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu-22.04)
 .PHONY: build
 
 publish-last-build:

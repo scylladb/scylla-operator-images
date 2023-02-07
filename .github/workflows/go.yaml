@@ -31,7 +31,7 @@ defaults:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
       with:
@@ -63,7 +63,7 @@ jobs:
 
   promote:
     name: Promote images
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
     - build
     if: ${{ github.event_name != 'pull_request' }}
@@ -96,7 +96,7 @@ jobs:
 
   failure-notifications:
     name: Failure notifications
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
     - build
     - promote
