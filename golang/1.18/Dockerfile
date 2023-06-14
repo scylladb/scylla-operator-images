@@ -11,4 +11,5 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     /tmp/download-file.sh https://go.dev/dl/go1.18.10.linux-amd64.tar.gz '2f1986ae1a95f1e2e735abdf2240770210482215c03293322ce9d3cb7b5c7b2904943827154d048771b00fa95d9b5e659d8077873dea0352d7d8cca8880ce204' | tar -C /usr/local -xzf - && \
+    go install github.com/mikefarah/yq/v4@v4.34.1 && \
     rm -rf /tmp/*
