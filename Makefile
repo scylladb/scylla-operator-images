@@ -41,6 +41,7 @@ build:
 	$(call build-image,./golang/1.18,$(REPO):golang-1.18,$(REPO):base-ubuntu-22.04)
 	$(call build-image,./golang/1.19,$(REPO):golang-1.19,$(REPO):base-ubuntu-22.04)
 	$(call build-image,./golang/1.20,$(REPO):golang-1.20,$(REPO):base-ubuntu-22.04)
+	$(call build-image,./kube-tools/latest,$(REPO):kube-tools,$(REPO):golang-1.20)
 	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu-22.04)
 .PHONY: build
 
