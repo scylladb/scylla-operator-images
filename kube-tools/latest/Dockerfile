@@ -4,6 +4,7 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip golang && \
     dnf clean all && \
     go install github.com/mikefarah/yq/v4@v4.34.1 && \
+    mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
     mkdir -p /go/src/k8s.io/ && \
     cd /go/src/k8s.io/ && \
     git clone --depth=1 --branch v1.27.3 https://github.com/kubernetes/kubernetes.git && \
