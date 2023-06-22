@@ -1,9 +1,9 @@
-FROM to-be-replaced-by-local-ref/golang:1.20
+FROM quay.io/podman/stable:v4.5
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends rsync && \
-    apt-get clean && \
+    dnf install -y rsync git make tar gzip golang && \
+    dnf clean all && \
+    go install github.com/mikefarah/yq/v4@v4.34.1 && \
     mkdir -p /go/src/k8s.io/ && \
     cd /go/src/k8s.io/ && \
     git clone --depth=1 --branch v1.27.3 https://github.com/kubernetes/kubernetes.git && \
