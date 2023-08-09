@@ -1,7 +1,7 @@
 FROM quay.io/podman/stable:v4.5
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
-    dnf install -y rsync git make tar gzip golang && \
+    dnf install -y rsync git make tar gzip golang skopeo && \
     dnf clean all && \
     go install github.com/mikefarah/yq/v4@v4.34.1 && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
