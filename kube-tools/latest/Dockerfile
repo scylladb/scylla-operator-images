@@ -1,4 +1,4 @@
-FROM quay.io/podman/stable:v4.5
+FROM quay.io/podman/stable:v4.6
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip golang skopeo && \
