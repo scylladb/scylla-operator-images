@@ -1,0 +1,5 @@
+context_dir,image_tag,from_tag
+./base/ubuntu/22.04,base-ubuntu-22.04,
+./golang/1.20,golang-1.20,base-ubuntu-22.04
+./kube-tools/latest,kube-tools,
+./node-setup,node-setup,base-ubuntu-22.04
