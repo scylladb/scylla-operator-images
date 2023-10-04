@@ -1,4 +1,4 @@
-FROM quay.io/podman/stable:v4.6
+FROM registry.access.redhat.com/ubi9/podman:9.2-15@sha256:e29e52923aeb2e3b2558df522318624843e2de4e1c22f79aa0102ff03dddc9d3
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip golang skopeo && \
