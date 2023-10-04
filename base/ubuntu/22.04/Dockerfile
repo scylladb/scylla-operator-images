@@ -4,9 +4,9 @@ SHELL ["/usr/bin/bash", "-euExo", "pipefail", "-O", "inherit_errexit", "-c"]
 
 # Install a minimal subset of packages that *every* runtime image needs.
 RUN echo 'APT::Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends curl ca-certificates jq && \
-    apt-get clean all && \
+    apt update && \
+    apt install -y --no-install-recommends curl ca-certificates jq && \
+    apt clean all && \
     rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT []
