@@ -34,12 +34,7 @@ endef
 
 build:
 	> '.build_state'
-	$(call build-image,./base/ubuntu/20.04,$(REPO):base-ubuntu-20.04,)
-	# TODO: switch this to the latest release when we migrate scylla-operator to use an explicit version so Major upgrades go through CI
-	$(call tag-image,$(REPO):base-ubuntu-20.04,$(REPO):base-ubuntu)
 	$(call build-image,./base/ubuntu/22.04,$(REPO):base-ubuntu-22.04,)
-	$(call build-image,./golang/1.18,$(REPO):golang-1.18,$(REPO):base-ubuntu-22.04)
-	$(call build-image,./golang/1.19,$(REPO):golang-1.19,$(REPO):base-ubuntu-22.04)
 	$(call build-image,./golang/1.20,$(REPO):golang-1.20,$(REPO):base-ubuntu-22.04)
 	$(call build-image,./kube-tools/latest,$(REPO):kube-tools,)
 	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu-22.04)
