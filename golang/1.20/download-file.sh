@@ -14,7 +14,7 @@ sha="$2"
 tmp="$( mktemp )"
 trap 'rm -f ${tmp}' EXIT
 
-curl --fail --retry 5 --retry-all-errors -L "${url}" > "${tmp}"
+curl --fail --retry 5 --retry-all-errors -L "${url}" -o "${tmp}"
 
 sha512sum -c <( echo "${sha}  ${tmp}" ) > /dev/stderr
 
