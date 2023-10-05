@@ -1,7 +1,11 @@
 all: build
 .PHONY: all
 
-REPO :=quay.io/scylladb/scylla-operator-images
+# Use local repo to avoid podman accidentally pulling existing remote manifest list and duplicating manifest in it.
+REPO :=localhost/scylla-operator-images
+PLATFORM :=linux/amd64
+JOBS :=1
+PARALLEL :=false
 
 MAKE_REQUIRED_MIN_VERSION:=4.2 # for SHELLSTATUS
 
@@ -28,16 +32,12 @@ endef
 
 # $1 - tag (including repo URI)
 define publish-image
-	podman push '$(1)'
+	podman manifest push '$(1)'
 
 endef
 
 build:
-	> '.build_state'
-	$(call build-image,./base/ubuntu/22.04,$(REPO):base-ubuntu-22.04,)
-	$(call build-image,./golang/1.20,$(REPO):golang-1.20,$(REPO):base-ubuntu-22.04)
-	$(call build-image,./kube-tools/latest,$(REPO):kube-tools,)
-	$(call build-image,./node-setup,$(REPO):node-setup,$(REPO):base-ubuntu-22.04)
+	REPO_REF='$(REPO)' PLATFORM='$(PLATFORM)' JOBS='$(JOBS)' PARALLEL='$(PARALLEL)' ./hack/build-images.sh
 .PHONY: build
 
 publish-last-build:
