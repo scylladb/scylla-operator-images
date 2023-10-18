@@ -10,4 +10,5 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     sha512sum -c <( echo "${installer_checksum}  ${poetry_installer}" ) && \
     python3 "${poetry_installer}" --version "${poetry_version}" -y && \
     rm "${poetry_installer}" && \
-    ln -s ~/.poetry/bin/poetry /usr/local/bin/poetry
+    ln -s ~/.local/bin/poetry /usr/local/bin/poetry && \
+    poetry --version
