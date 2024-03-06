@@ -5,3 +5,4 @@ context_dir,image_tag,from_tag
 ./kube-tools/latest,kube-tools,
 ./node-setup,node-setup,base-ubuntu-22.04
 ./poetry/1.5,poetry-1.5,
+./buildah/latest,buildah,
