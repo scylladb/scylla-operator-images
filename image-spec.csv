@@ -1,6 +1,7 @@
 context_dir,image_tag,from_tag
 ./base/ubuntu/22.04,base-ubuntu-22.04,
 ./golang/1.21,golang-1.21,base-ubuntu-22.04
+./golang/1.22,golang-1.22,base-ubuntu-22.04
 ./kube-tools/latest,kube-tools,
 ./node-setup,node-setup,base-ubuntu-22.04
 ./poetry/1.5,poetry-1.5,
