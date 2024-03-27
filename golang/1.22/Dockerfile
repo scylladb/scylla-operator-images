@@ -1,7 +1,8 @@
 FROM to-be-replaced-by-local-ref/base:ubuntu-22.04
 
 ENV GOPATH=/go \
-    GOROOT=/usr/local/go
+    GOROOT=/usr/local/go \
+    GOTOOLCHAIN=local
 ENV PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin
 
 COPY ./download-file.sh /tmp/
