@@ -12,11 +12,11 @@ RUN apt update && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="94f50c9c0c14a969fbc1b246c6dbca9e46c65d75272c0da7aad5461af9fb28b73afab22ff4fa76493351e565339177def3fdb9f30f6ac133b259171aa4f04ff5" ;; \
-        aarch64) architecture="arm64" checksum="81d5d09d54fa57a49d65efb0fa0b07319f2a99508929c97cfdf241ebf6f33bcb22e31f617529d5869512ee62fc00eae3d55eba2e78b84e3bbdbd92b48065d4e9" ;; \
+        x86_64) architecture="amd64" checksum="e80a99505145aa2305a88a1ba9ad0ba7ff95a30a527e34c3a22409ec3cab96850eee87631acb91bb6977f02d4c072aa02465356f88f7f625d56bd4371d2c3006" ;; \
+        aarch64) architecture="arm64" checksum="9bf2127647346d9c85b77f320e42c112cee0872694c558a02deaf395bf92d422f71ddda2bab1ff342590d51b9bbb81538c367d49ffbf0a4b1478aa64771997b5" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://go.dev/dl/go1.22.2.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh "https://go.dev/dl/go1.22.3.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
     go install golang.org/x/vuln/cmd/govulncheck@latest && \
     go install github.com/mikefarah/yq/v4@v4.34.1 && \
     go install helm.sh/helm/v3/cmd/helm@1e210a2 && echo "installed helm v3.12.2" && \
