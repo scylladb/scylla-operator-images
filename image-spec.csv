@@ -1,4 +1,5 @@
 context_dir,image_tag,from_tag
+./base/redhat/ubi9.4-minimal,base-redhat-ubi9.4-minimal,
 ./base/ubuntu/22.04,base-ubuntu-22.04,
 ./golang/1.21,golang-1.21,base-ubuntu-22.04
 ./golang/1.22,golang-1.22,base-ubuntu-22.04
