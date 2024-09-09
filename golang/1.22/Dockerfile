@@ -1,4 +1,4 @@
-FROM to-be-replaced-by-local-ref/base:ubuntu-22.04
+FROM to-be-replaced-by-local-ref/base:ubi-9.4-minimal
 
 ENV GOPATH=/go \
     GOROOT=/usr/local/go \
@@ -7,10 +7,10 @@ ENV PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin
 
 COPY ./download-file.sh /tmp/
 
-RUN apt update && \
-    apt install -y --no-install-recommends git make tar gzip gcc g++ libc6-dev dbus-x11 && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/* && \
+RUN microdnf update -y && \
+    microdnf install -y git make tar gzip gcc g++ && \
+    microdnf clean all && \
+    rm -rf /var/cache/dnf/* && \
     case $(arch) in \
         x86_64) architecture="amd64" checksum="7bc978aad1dcfed937c4b1d18e43c7eb3fc836ffbf359548bfd4bb5f77814c4994eaee18a7ceefa8e7d4c5a2fb97e26bc4d2f5a7c54dd5ee437f08b74a06f111" ;; \
         aarch64) architecture="arm64" checksum="17a1152545b623321c33cc10fb08d95701f24e6a2c371da20aac44a8aba5101b069fecd62c27acd8c0fca030e78466244ed86f02560312560088fd7af2eb87ac" ;; \

@@ -1,6 +1,6 @@
-FROM to-be-replaced-by-local-ref/base:ubuntu
+FROM to-be-replaced-by-local-ref/base:ubi-9.4-minimal
 
-RUN apt update && \
-    apt install -y --no-install-recommends xfsprogs mdadm && \
-    apt clean  && \
-    rm -rf /var/lib/apt/lists/*
+RUN microdnf update -y && \
+    microdnf install -y xfsprogs mdadm --nodocs --enablerepo almalinux-base-9 && \
+    microdnf clean all && \
+    rm -rf /var/cache/dnf/*
