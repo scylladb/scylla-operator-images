@@ -8,7 +8,8 @@ ENV PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin
 COPY ./download-file.sh /tmp/
 
 RUN microdnf update -y && \
-    microdnf install -y git make tar gzip gcc g++ && \
+    microdnf install -y git make tar gzip gcc g++ findutils && \
+    microdnf install -y dbus-x11 --enablerepo=almalinux-appstream-9 && \
     microdnf clean all && \
     rm -rf /var/cache/dnf/* && \
     case $(arch) in \
