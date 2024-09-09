@@ -13,11 +13,11 @@ RUN microdnf update -y && \
     microdnf clean all && \
     rm -rf /var/cache/dnf/* && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="7bc978aad1dcfed937c4b1d18e43c7eb3fc836ffbf359548bfd4bb5f77814c4994eaee18a7ceefa8e7d4c5a2fb97e26bc4d2f5a7c54dd5ee437f08b74a06f111" ;; \
-        aarch64) architecture="arm64" checksum="17a1152545b623321c33cc10fb08d95701f24e6a2c371da20aac44a8aba5101b069fecd62c27acd8c0fca030e78466244ed86f02560312560088fd7af2eb87ac" ;; \
+        x86_64) architecture="amd64" checksum="5213abec3208bc9af330c870e67c08ef4b336f6e07d119a62081dace5805478550a74e67bcc926d30f9f642a3543699936f397e123c6587e7519411d6e3648f9" ;; \
+        aarch64) architecture="arm64" checksum="2e24226d24617fad92f747d0a881fe8ccf7843de11b4984bae43e9892e52a9e7cf1e050ffca25523db324a96b3edea6f623d5133dda8a966326e9b103bee3797" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://go.dev/dl/go1.22.5.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh "https://go.dev/dl/go1.22.7.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
     go install golang.org/x/vuln/cmd/govulncheck@latest && \
     go install github.com/mikefarah/yq/v4@v4.34.1 && \
     go install helm.sh/helm/v3/cmd/helm@1e210a2 && echo "installed helm v3.12.2" && \
