@@ -10,6 +10,7 @@ RUN microdnf update -y && \
     curl -L https://repo.almalinux.org/almalinux/9/BaseOS/x86_64/os/RPM-GPG-KEY-AlmaLinux-9 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
 COPY almalinux.repo /etc/yum.repos.d/almalinux.repo
+COPY almalinux-appstream.repo /etc/yum.repos.d/almalinux-appstream.repo
 
 ENTRYPOINT []
 CMD ["/usr/bin/bash"]
