@@ -2,7 +2,8 @@ FROM to-be-replaced-by-local-ref/base:ubi-9.4-minimal
 
 ENV GOPATH=/go \
     GOROOT=/usr/local/go \
-    GOTOOLCHAIN=local
+    GOTOOLCHAIN=local \
+    GOPROXY=direct
 ENV PATH=${PATH}:${GOROOT}/bin:${GOPATH}/bin
 
 COPY ./download-file.sh /tmp/
