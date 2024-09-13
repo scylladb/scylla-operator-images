@@ -1,7 +1,6 @@
 context_dir,image_tag,from_tag
 ./base/ubi/9.4-minimal,base-ubi-9.4-minimal
 ./golang/1.22,golang-1.22,base-ubi-9.4-minimal
-./golang/1.23,golang-1.23,base-ubi-9.4-minimal
 ./kube-tools/latest,kube-tools,
 ./node-setup,node-setup,base-ubi-9.4-minimal
 ./poetry/1.5,poetry-1.5,
