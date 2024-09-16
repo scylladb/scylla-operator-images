@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/podman:9.2-15@sha256:e29e52923aeb2e3b2558df522318624843e2de4e1c22f79aa0102ff03dddc9d3
+FROM registry.access.redhat.com/ubi9/podman:9.4-14@sha256:b832c32aada90c82e29d77a61d2f8f1da3fa401639f51c5d103375fd283d967a
 
 ENV GOPATH=/go \
     GOROOT=/usr/local/go
