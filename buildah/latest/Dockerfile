@@ -1,4 +1,4 @@
-FROM quay.io/buildah/stable:v1.33
+FROM quay.io/buildah/stable:v1.37
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y git && \
