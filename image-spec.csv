@@ -5,4 +5,5 @@ context_dir,image_tag,from_tag
 ./kube-tools/latest,kube-tools,
 ./node-setup,node-setup,base-ubi-9.4-minimal
 ./poetry/1.5,poetry-1.5,
+./poetry/1.8,poetry-1.8,base-ubi-9.4-minimal
 ./buildah/latest,buildah,
