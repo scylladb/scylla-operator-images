@@ -4,7 +4,7 @@ SHELL ["/usr/bin/bash", "-euExo", "pipefail", "-O", "inherit_errexit", "-c"]
 
 # Install a minimal subset of packages that *every* runtime image needs.
 RUN microdnf update -y && \
-    microdnf install -y jq tar && \
+    microdnf install -y jq tar findutils && \
     microdnf clean all && \
     rm -rf /var/cache/dnf/* && \
     curl -L https://repo.almalinux.org/almalinux/9/BaseOS/x86_64/os/RPM-GPG-KEY-AlmaLinux-9 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
