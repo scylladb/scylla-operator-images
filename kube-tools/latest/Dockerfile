@@ -9,11 +9,11 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip skopeo jq && \
     dnf clean all && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="5213abec3208bc9af330c870e67c08ef4b336f6e07d119a62081dace5805478550a74e67bcc926d30f9f642a3543699936f397e123c6587e7519411d6e3648f9" ;; \
-        aarch64) architecture="arm64" checksum="2e24226d24617fad92f747d0a881fe8ccf7843de11b4984bae43e9892e52a9e7cf1e050ffca25523db324a96b3edea6f623d5133dda8a966326e9b103bee3797" ;; \
+        x86_64) architecture="amd64" checksum="ca792b934f4f569d3d7b17ef7c34878e08a4b9edf4bba5588c2b63d99995f948a8d20405ec6a5a95b7af294b1def4550f43d942d3003f1c770e9463a54fa0a94" ;; \
+        aarch64) architecture="arm64" checksum="6df4f263b5e7f2486a5cf9277baefd52394b2df908f8902af5af47bb5d270a27cddd9048dee69f3b544504ba7ce0324f99b6213cf367a52dba17fc748d594d8b" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://go.dev/dl/go1.22.7.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh "https://go.dev/dl/go1.23.5.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
     ln -s /usr/local/go/bin/go /usr/local/bin/go && \
     go install github.com/mikefarah/yq/v4@v4.44.3 && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
