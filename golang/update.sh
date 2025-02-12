@@ -12,7 +12,7 @@ function get-latest-version {
   echo "${version_info}" | jq -r '.[] | select( .version | test("'"${1}"'") ) | .version | sub("^go"; "")'
 }
 
-for version_regex in 'go1\\.23($|\\.[0-9]+)'; do
+for version_regex in 'go1\\.23($|\\.[0-9]+)' 'go1\\.24($|\\.[0-9]+)'; do
   version=$( get-latest-version "${version_regex}" )
   short_version="${version%.*}"
   find "${short_version}" -name '*.sum' -delete
