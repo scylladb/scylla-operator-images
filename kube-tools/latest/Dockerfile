@@ -6,7 +6,7 @@ ENV GOPATH=/go \
 COPY ./download-file.sh /tmp/
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
-    dnf install -y rsync git make tar gzip skopeo jq && \
+    dnf install -y rsync git make tar gzip skopeo jq procps-ng && \
     dnf clean all && \
     case $(arch) in \
         x86_64) architecture="amd64" checksum="ca792b934f4f569d3d7b17ef7c34878e08a4b9edf4bba5588c2b63d99995f948a8d20405ec6a5a95b7af294b1def4550f43d942d3003f1c770e9463a54fa0a94" ;; \
