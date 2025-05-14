@@ -18,7 +18,21 @@ function get-url {
 function install-golang {
   url="$( get-url "${1}" "${2}" )"
   f="$( basename "${url}" )"
-  curl --fail --retry 5 --retry-all-errors -L "${url}" > "/tmp/${f}"
-  cat "/tmp/${f}" | sha512sum -c "/tmp/${f}.sum"
-  tar -C /usr/local -xzf "/tmp/${f}"
+  tmpdir="$(mktemp -d)"
+  curl --fail --retry 5 --retry-all-errors -L "${url}" > "/${tmpdir}/${f}"
+  cat "${tmpdir}/${f}" | sha512sum -c "/checksums/${f}.sum"
+  tar -C /usr/local -xzf "${tmpdir}/${f}"
+}
+
+function install-golangci-lint {
+  version="${1}"
+  arch="${2}"
+  url="https://github.com/golangci/golangci-lint/releases/download/v${version}/golangci-lint-${version}-linux-${arch}.tar.gz"
+  f="$( basename "${url}" )"
+  tmpdir="$(mktemp -d)"
+  curl --fail --retry 5 --retry-all-errors -L "${url}" > "${tmpdir}/${f}"
+  cat "${tmpdir}/${f}" | sha512sum -c "/checksums/${f}.sum"
+  tar -C "${tmpdir}" -xzf "${tmpdir}/${f}"
+  mv "${tmpdir}/golangci-lint-${version}-linux-${arch}/golangci-lint" /usr/local/bin/
+  chmod +x /usr/local/bin/golangci-lint
 }
