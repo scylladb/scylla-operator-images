@@ -9,19 +9,29 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip skopeo jq procps-ng && \
     dnf clean all && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="ca792b934f4f569d3d7b17ef7c34878e08a4b9edf4bba5588c2b63d99995f948a8d20405ec6a5a95b7af294b1def4550f43d942d3003f1c770e9463a54fa0a94" ;; \
-        aarch64) architecture="arm64" checksum="6df4f263b5e7f2486a5cf9277baefd52394b2df908f8902af5af47bb5d270a27cddd9048dee69f3b544504ba7ce0324f99b6213cf367a52dba17fc748d594d8b" ;; \
+        x86_64) architecture="amd64" checksum="0442a8072c79c48f87ff1068ba2a40feda4c07b76ecd4ea0f6a6e9ae30020c39d06bd17ea0ebcedf48992526ecb7ddce8989119a5caca69d04364f5b7fca489b" ;; \
+        aarch64) architecture="arm64" checksum="ccc64f89547ddf04dfd806319750c0e692f7e3980f2d8a06ea0161da8c86495487128af21347b5d65d760f9798855165d3509cd80050842e4d0693cdc9a7f08c" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://go.dev/dl/go1.23.5.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh "https://go.dev/dl/go1.24.6.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
     ln -s /usr/local/go/bin/go /usr/local/bin/go && \
     go install github.com/mikefarah/yq/v4@v4.44.3 && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
+    go install github.com/redhat-openshift-ecosystem/openshift-preflight/cmd/preflight@v1.14.1 && \
+    mv "$( go env GOPATH )/bin/preflight" /usr/local/bin/ && \
     mkdir -p /go/src/k8s.io/ && \
     cd /go/src/k8s.io/ && \
-    git clone --depth=1 --branch v1.31.1 https://github.com/kubernetes/kubernetes.git && \
+    git clone --depth=1 --branch v1.33.3 https://github.com/kubernetes/kubernetes.git && \
     cd ./kubernetes && \
     make WHAT=cmd/kubectl && \
     mv /go/src/k8s.io/kubernetes/_output/bin/kubectl /usr/bin/ && \
-    rm -rf /go/src/k8s.io/ && \
+    mkdir -p /go/src/github.com/operator-framework && \
+    cd /go/src/github.com/operator-framework && \
+    git clone --depth=1 --branch v1.56.0 https://github.com/operator-framework/operator-registry.git && \
+    cd ./operator-registry && \
+    make bin/opm && \
+    mv /go/src/github.com/operator-framework/operator-registry/bin/opm /usr/bin/ && \
+    go clean -modcache && \
+    go clean -cache && \
+    rm -rf /go/src/ && \
     rm -rf /tmp/*
