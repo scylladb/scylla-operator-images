@@ -12,7 +12,7 @@ COPY /checksums/*.sum /checksums/
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
     microdnf update -y && \
-    microdnf install -y git make tar gzip gcc g++ findutils diffutils && \
+    microdnf install -y git make tar gzip gcc g++ findutils diffutils file && \
     microdnf install -y dbus-x11 --enablerepo=almalinux-appstream-9 && \
     microdnf clean all && \
     rm -rf /var/cache/dnf/* && \
