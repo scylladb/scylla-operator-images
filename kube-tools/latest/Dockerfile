@@ -25,12 +25,13 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     cd ./kubernetes && \
     make WHAT=cmd/kubectl && \
     mv /go/src/k8s.io/kubernetes/_output/bin/kubectl /usr/bin/ && \
-    mkdir -p /go/src/github.com/operator-framework && \
-    cd /go/src/github.com/operator-framework && \
-    git clone --depth=1 --branch v1.56.0 https://github.com/operator-framework/operator-registry.git && \
-    cd ./operator-registry && \
-    make bin/opm && \
-    mv /go/src/github.com/operator-framework/operator-registry/bin/opm /usr/bin/ && \
+    case $(arch) in \
+        x86_64) architecture="amd64" checksum="835a5540974781620a8a31f91758bbcfbbf32eccf2f1fc4e4a690b52b0287176141225c3b8bc5010a22a1e0af1783d76747ff10d8e299c8cd304f6f9cdbb6776" ;; \
+        aarch64) architecture="arm64" checksum="e6dc9265fdddf0a939ca6cacd5a7164396caf32478bc8960b93d2017044d58bc1594bef83546f22f698d9f7707a1ad25fe698c0280556fa6b3f6e3005fdee2da" ;; \
+        *) exit 42;; \
+    esac && \
+    /tmp/download-file.sh "https://github.com/operator-framework/operator-registry/releases/download/v1.56.0/linux-${architecture}-opm" "${checksum}" | cat >/usr/local/bin/opm  && \
+    chmod +x /usr/local/bin/opm && \
     go clean -modcache && \
     go clean -cache && \
     rm -rf /go/src/ && \
