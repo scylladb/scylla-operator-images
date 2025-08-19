@@ -6,9 +6,6 @@ ENV GOPATH=/go \
 COPY ./download-file.sh /tmp/
 
 RUN set -euExo pipefail && shopt -s inherit_errexit && \
-    # https://docs.podman.io/en/latest/markdown/podman.1.html#rootless-mode
-    usermod --add-subuids 10000-75535 podman && \
-    usermod --add-subgids 10000-75535 podman && \
     dnf install -y rsync git make tar gzip skopeo jq procps-ng && \
     dnf clean all && \
     case $(arch) in \
