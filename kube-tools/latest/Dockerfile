@@ -32,6 +32,14 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     esac && \
     /tmp/download-file.sh "https://github.com/operator-framework/operator-registry/releases/download/v1.56.0/linux-${architecture}-opm" "${checksum}" | cat >/usr/local/bin/opm  && \
     chmod +x /usr/local/bin/opm && \
+    mkdir -p /go/src/github.com/operator-framework && \
+    cd /go/src/github.com/operator-framework && \
+    # TODO: replace to upstream once https://github.com/operator-framework/operator-sdk/pull/6978 is released \
+    git clone --depth=1 --branch support-aggregated-clusterroles https://github.com/zimnx/operator-sdk.git && \
+    cd ./operator-sdk && \
+    make build && \
+    mv /go/src/github.com/operator-framework/operator-sdk/build/operator-sdk /usr/local/bin/operator-sdk && \
+    chmod +x /usr/local/bin/operator-sdk && \
     go clean -modcache && \
     go clean -cache && \
     rm -rf /go/src/ && \
