@@ -1,11 +1,13 @@
 # See the OWNERS docs at https://go.k8s.io/owners
-approvers:
-- zimnx
-- rzetelskik
-- mflendrich
-- czeslavo
-reviewers:
-- zimnx
-- rzetelskik
-- mflendrich
-- czeslavo
+
+filters:
+  ".*":
+    approvers:
+    - operator-approvers
+    reviewers:
+    - operator-review-autoassignees
+  "go\\.(mod|sum)$":
+    reviewers:
+    - operator-approvers
+    labels:
+    - area/dependency
