@@ -26,7 +26,7 @@ EOF
 golangci_lint_version="$( curl --fail --retry 5 --retry-all-errors -L https://api.github.com/repos/golangci/golangci-lint/releases/latest | jq -r '.tag_name' )"
 golangci_lint_semver="${golangci_lint_version#v}"
 
-for version_regex in 'go1\\.23($|\\.[0-9]+)' 'go1\\.24($|\\.[0-9]+)'; do
+for version_regex in 'go1\\.24($|\\.[0-9]+)' 'go1\\.25($|\\.[0-9]+)'; do
   # Resolve golang version.
   version_info="$( curl --fail --retry 5 --retry-all-errors -L  https://go.dev/dl/?mode=json )"
   version=$( get-latest-version "${version_info}" "${version_regex}" )

@@ -1,9 +1,10 @@
 context_dir,image_tag,from_tag
 ./base/ubi/9.5-minimal,base-ubi-9.5-minimal
-./golang/1.23,golang-1.23,base-ubi-9.5-minimal
-./golang/1.24,golang-1.24,base-ubi-9.5-minimal
+./base/ubi/9.6-minimal,base-ubi-9.6-minimal
+./golang/1.24,golang-1.24,base-ubi-9.6-minimal
+./golang/1.25,golang-1.25,base-ubi-9.6-minimal
 ./kube-tools/latest,kube-tools,
-./node-setup,node-setup,base-ubi-9.5-minimal
-./poetry/1.8,poetry-1.8,base-ubi-9.5-minimal
-./poetry/2.1,poetry-2.1,base-ubi-9.5-minimal
+./node-setup,node-setup,base-ubi-9.6-minimal
+./poetry/1.8,poetry-1.8,base-ubi-9.6-minimal
+./poetry/2.1,poetry-2.1,base-ubi-9.6-minimal
 ./buildah/latest,buildah,
