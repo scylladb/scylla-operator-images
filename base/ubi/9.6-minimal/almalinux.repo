@@ -1,0 +1,6 @@
+[almalinux-base-9]
+name=AlmaLinux 9 - $basearch - Base
+baseurl=https://repo.almalinux.org/almalinux/9/BaseOS/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
