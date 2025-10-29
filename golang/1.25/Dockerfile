@@ -23,6 +23,7 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     install-golangci-lint "${GOLANGCI_LINT_VERSION}" "${architecture}" && \
     go install golang.org/x/vuln/cmd/govulncheck@latest && \
     go install github.com/mikefarah/yq/v4@v4.44.3 && \
+    go install sigs.k8s.io/kustomize/kustomize/v5@v5.7.1 && \
     go install helm.sh/helm/v3/cmd/helm@1e210a2 && echo "installed helm v3.12.2" && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
     mkdir -p /go/src/github.com/operator-framework && \
