@@ -14,6 +14,7 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     microdnf update -y && \
     microdnf install -y git make tar gzip gcc g++ findutils diffutils file && \
     microdnf install -y dbus-x11 --enablerepo=almalinux-appstream-9 && \
+    microdnf install -y podman podman-docker && \
     microdnf clean all && \
     rm -rf /var/cache/dnf/* && \
     source /scripts/lib.sh && \
@@ -33,6 +34,8 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     cd ./operator-sdk && \
     make build && \
     mv /go/src/github.com/operator-framework/operator-sdk/build/operator-sdk /usr/bin/ && \
+    curl -Lo /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod +x /usr/bin/kubectl && \
     go clean -modcache && \
     go clean -cache && \
     rm -rf /go/src/ && \
