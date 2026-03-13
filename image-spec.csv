@@ -6,5 +6,5 @@ context_dir,image_tag,from_tag
 ./golang/1.26,golang-1.26,base-ubi-9.7-minimal
 ./kube-tools/latest,kube-tools,
 ./node-setup,node-setup,base-ubi-9.7-minimal
-./poetry/2.1,poetry-2.1,base-ubi-9.7-minimal
+./uv/0.10,uv-0.10,base-ubi-9.7-minimal
 ./buildah/latest,buildah,
