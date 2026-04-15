@@ -8,3 +8,4 @@ context_dir,image_tag,from_tag
 ./node-setup,node-setup,base-ubi-9.7-minimal
 ./uv/0.10,uv-0.10,base-ubi-9.7-minimal
 ./buildah/latest,buildah,
+./jenkins-e2e/latest,jenkins-e2e,

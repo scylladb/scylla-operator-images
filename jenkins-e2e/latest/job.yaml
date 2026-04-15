@@ -1,0 +1,62 @@
+periodics:
+- name: __PROWJOB_NAME__
+  # Prow requires either periodics or presubmit, postsubmit jobs. This is a hack (only schedule on "February 31").
+  cron: "0 0 31 2 *"
+  decorate: true
+  extra_refs:
+  - org: scylladb
+    repo: scylla-operator
+    base_ref: master
+    path_alias: github.com/scylladb/scylla-operator
+  spec:
+    nodeSelector:
+      pool: kind-workers
+    tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "kind"
+      effect: "NoSchedule"
+    containers:
+    - name: jenkins-e2e-kind
+      image: quay.io/scylladb/scylla-operator-images:kube-tools
+      imagePullPolicy: IfNotPresent
+      command:
+      - /usr/bin/bash
+      - -euExo
+      - pipefail
+      - -O
+      - inherit_errexit
+      - -O
+      - extglob
+      - -c
+      args:
+      - |
+        function resolve-image {
+          (
+            set -euEo pipefail
+            local digest
+            digest=$( skopeo inspect --raw docker://"${1}" | skopeo manifest-digest /dev/stdin )
+            echo "${1}@${digest}"
+          )
+        }
+
+        SO_IMAGE="$( resolve-image docker.io/scylladb/scylla-operator:latest )"
+        SO_IMAGE="${SO_IMAGE/:*([^:\/])@/@}"
+        export SO_IMAGE
+
+        # Disable pids limit to allow high parallelism in tests.
+        sed -i '/\[containers\]/a pids_limit = 0' /etc/containers/containers.conf
+
+        make test-e2e-kind
+      env:
+      - name: SCYLLADB_IMAGE_REF
+        value: __SCYLLADB_IMAGE_REF__
+      resources:
+        requests:
+          cpu: 6
+          memory: 12Gi
+        limits:
+          cpu: 6
+          memory: 12Gi
+      securityContext:
+        privileged: true
