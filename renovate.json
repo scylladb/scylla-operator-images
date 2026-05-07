@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["custom.regex"],
+  "schedule": ["before 5am every weekday"],
+  "labels": [
+    "kind/dependency-bump",
+    "priority/important-longterm"
+  ],
+  "customManagers": [
+    {
+      "description": "Custom manager for container images in Dockerfiles with Renovate annotations.",
+      "customType": "regex",
+      "fileMatch": ["(^|/)Dockerfile$"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)(\\s+packageName=(?<packageName>\\S+))?(\\s+versioning=(?<versioning>\\S+))?\\s*\\nFROM\\s+\\S+:(?<currentValue>\\S+)"
+      ]
+    }
+  ]
+}
