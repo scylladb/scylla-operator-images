@@ -1,4 +1,5 @@
 context_dir,image_tag,from_tag
+./base/ubi/9.8-minimal,base-ubi-9.8-minimal
 ./base/ubi/9.7-minimal,base-ubi-9.7-minimal
 ./golang/1.25,golang-1.25,base-ubi-9.7-minimal
 ./golang/1.26,golang-1.26,base-ubi-9.7-minimal
