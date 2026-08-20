@@ -1,4 +1,4 @@
-FROM to-be-replaced-by-local-ref/base:ubi-9.5-minimal
+FROM to-be-replaced-by-local-ref/base:ubi-9.8-minimal
 
 SHELL ["/usr/bin/bash",	"-euExo", "pipefail", "-O", "inherit_errexit", "-c"]
 
