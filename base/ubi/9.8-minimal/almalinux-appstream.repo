@@ -1,0 +1,6 @@
+[almalinux-appstream-9]
+name=AlmaLinux 9 $releasever - AppStream
+baseurl=https://repo.almalinux.org/almalinux/9/AppStream/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
