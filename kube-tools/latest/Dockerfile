@@ -42,11 +42,11 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     /tmp/download-file.sh "https://github.com/tektoncd/cli/releases/download/v0.43.0/tkn_0.43.0_Linux_${architecture}.tar.gz" "${checksum}" | tar -C /usr/local/bin -xzf - tkn && \
     chmod +x /usr/local/bin/tkn && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="813e82cf7a82a034d099476e1b423bbdd7c32fb36c5209a0fa74c20c58d2676fc06509fd4bf6f0019e146c3b3e8b5ce85d26878ce336e8eeb3c66aa9e7efe35b" ;; \
-        aarch64) architecture="arm64" checksum="77b2bd072739c33671348d6dd3901adb1cd1dd46e94f3e5d20f71741450c27d3cb73289c82f610c486bc1414e1ab2b07a358ec651fca12d3c7139c1bbed99b07" ;; \
+        x86_64) architecture="amd64" checksum="f58a029ef8dee72f7fcf0345a5731795de0745ee6c955efd24801ced8409395cd2a4dc0ca41663c43231a48e94a5375cd01e63bc37b4557bf708e9ce6703fffa" ;; \
+        aarch64) architecture="arm64" checksum="034585fbb3766f34c3cdbc127b145c76904073918e2af76e31a81349aa2c67979e35ab780cc4a1cb1dadc5df04ae3b9c2984c1b382f1cff6b4ee48b560b7f048" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-${architecture}" "${checksum}" | cat >/usr/local/bin/kind  && \
+    /tmp/download-file.sh "https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-${architecture}" "${checksum}" | cat >/usr/local/bin/kind  && \
     chmod +x /usr/local/bin/kind && \
     mkdir -p /go/src/github.com/operator-framework && \
     cd /go/src/github.com/operator-framework && \
