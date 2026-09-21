@@ -1,0 +1,92 @@
+name: Publish images
+
+# Runs on every push to master, and weekly regardless of push activity so the toolchain images pick up upstream OS
+# and package updates. Both triggers rebuild and publish the same set of images the same way.
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 1 * * SUN'
+
+# Overlapping runs race on the floating tags. Queue instead of cancelling so a master push and the weekly rebuild
+# both publish.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+jobs:
+  images:
+    uses: ./.github/workflows/images.yaml
+
+  manifest:
+    name: manifest
+    needs: images
+    runs-on: ubuntu-24.04
+    container:
+      image: quay.io/scylladb/scylla-operator-images:buildah
+      # Even without a build, buildah's overlay storage driver bind-mounts its own home on every store open (pull and
+      # push included), which docker's default profiles deny.
+      options: --privileged
+    timeout-minutes: 30
+    env:
+      REGISTRY_AUTH_FILE: /run/containers/auth.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download images
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: images-*
+          path: images/
+          merge-multiple: true
+
+      - name: Write registry auth file
+        env:
+          REGISTRY_AUTH_JSON: ${{ secrets.QUAY_SCYLLADB_PROD_PUBLISHER_CREDS }}
+        run: |
+          umask 077
+          mkdir -p "$( dirname "${REGISTRY_AUTH_FILE}" )"
+          printf '%s' "${REGISTRY_AUTH_JSON}" > "${REGISTRY_AUTH_FILE}"
+
+      - name: Create and push manifests
+        run: |
+          set -euExo pipefail
+          shopt -s inherit_errexit
+
+          repo_ref=quay.io/scylladb/scylla-operator-images
+          revision="$( git rev-parse HEAD )"
+          date_tag="$( date '+%Y-%m-%d-%H%M%S' )"
+          digestfile="$( mktemp )"
+
+          skip_header=true
+          while IFS=, read -r context_dir image_tag from_tag
+          do
+            if "${skip_header}"; then
+              skip_header=false
+              continue
+            fi
+
+            image_ref="${repo_ref}:${image_tag}"
+            buildah manifest create --annotation="org.opencontainers.image.revision=${revision}" "${image_ref}"
+
+            for arch in amd64 arm64; do
+              buildah manifest add "${image_ref}" "$( buildah pull "docker-archive:images/${image_tag}-${arch}.tar" )"
+            done
+
+            # --all pushes the per-arch images along with the index; they're only reachable by digest.
+            buildah manifest push --all --digestfile="${digestfile}" "${image_ref}" "docker://${image_ref}"
+            echo '' | cat "${digestfile}" -
+
+            buildah manifest push --all "${image_ref}" "docker://${image_ref}-${date_tag}"
+          done < image-spec.csv
