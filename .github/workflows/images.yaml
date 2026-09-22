@@ -1,0 +1,82 @@
+name: Build images
+
+# Builds every image listed in image-spec.csv, in order, natively on amd64 and arm64 runners, with --from chains
+# resolved against the images built earlier in the same run. Nothing is pushed to a registry. Each leg uploads its
+# images as an artifact named images-<arch> holding one docker-archive per image at images/<image_tag>-<arch>.tar,
+# retained for one day.
+on:
+  workflow_call:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: build (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    container:
+      image: quay.io/scylladb/scylla-operator-images:buildah
+      # buildah needs /dev/fuse and mount/namespace access that docker's default apparmor and seccomp profiles deny.
+      # GHA overrides the image ENTRYPOINT, so the binfmt/qemu setup from buildah/latest/entrypoint.sh doesn't run
+      # here: builds are native per runner, not cross-arch.
+      options: --privileged
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          set -euExo pipefail
+          shopt -s inherit_errexit
+
+          revision="$( git rev-parse HEAD )"
+          mkdir -p images
+
+          skip_header=true
+          while IFS=, read -r context_dir image_tag from_tag
+          do
+            if "${skip_header}"; then
+              skip_header=false
+              continue
+            fi
+
+            image_ref="${image_tag}-${ARCH}"
+            if [[ -z "${from_tag}" ]]; then
+              from_ref=""
+            else
+              from_ref="${from_tag}-${ARCH}"
+            fi
+
+            buildah build --format=docker \
+              --platform="linux/${ARCH}" \
+              --label="org.opencontainers.image.revision=${revision}" \
+              --from="${from_ref}" \
+              --tag="${image_ref}" "${context_dir}"
+
+            # docker-archive keeps the docker manifest format; oci-archive would convert it.
+            buildah push "${image_ref}" "docker-archive:images/${image_ref}.tar"
+          done < image-spec.csv
+
+      - name: Upload images
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: images-${{ matrix.arch }}
+          path: images/
+          retention-days: 1
+          if-no-files-found: error
+          # Layers are already gzipped.
+          compression-level: 0
