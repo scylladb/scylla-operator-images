@@ -9,11 +9,11 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     dnf install -y rsync git make tar gzip skopeo jq procps-ng && \
     dnf clean all && \
     case $(arch) in \
-        x86_64) architecture="amd64" checksum="0442a8072c79c48f87ff1068ba2a40feda4c07b76ecd4ea0f6a6e9ae30020c39d06bd17ea0ebcedf48992526ecb7ddce8989119a5caca69d04364f5b7fca489b" ;; \
-        aarch64) architecture="arm64" checksum="ccc64f89547ddf04dfd806319750c0e692f7e3980f2d8a06ea0161da8c86495487128af21347b5d65d760f9798855165d3509cd80050842e4d0693cdc9a7f08c" ;; \
+        x86_64) architecture="amd64" checksum="bfed9e8e85e05c5bedf2b853062b879a223db41e63085b74ffdf2a3b4f816032d4df3816fcbf7e484e2a34782803f39531705dc873bbd9dc7f3031bc4edadcdf" ;; \
+        aarch64) architecture="arm64" checksum="9b77bfe592785400a65ff3abd1b9f9a2ff440db7b37ef34ee009a94bf41b88f3801ec4227ffc55316001379123c7cf3bd2ce3226a317a6ba86f68d8d178193d6" ;; \
         *) exit 42;; \
     esac && \
-    /tmp/download-file.sh "https://go.dev/dl/go1.24.6.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
+    /tmp/download-file.sh "https://go.dev/dl/go1.26.8.linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local -xzf - && \
     ln -s /usr/local/go/bin/go /usr/local/bin/go && \
     go install github.com/mikefarah/yq/v4@v4.44.3 && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
@@ -23,7 +23,7 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     mv "$( go env GOPATH )/bin/operator-manifest-tools" /usr/local/bin/ && \
     mkdir -p /go/src/k8s.io/ && \
     cd /go/src/k8s.io/ && \
-    git clone --depth=1 --branch v1.33.3 https://github.com/kubernetes/kubernetes.git && \
+    git clone --depth=1 --branch v1.36.5 https://github.com/kubernetes/kubernetes.git && \
     cd ./kubernetes && \
     make WHAT=cmd/kubectl && \
     mv /go/src/k8s.io/kubernetes/_output/bin/kubectl /usr/bin/ && \
