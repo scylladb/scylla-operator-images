@@ -42,6 +42,13 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     /tmp/download-file.sh "https://github.com/tektoncd/cli/releases/download/v0.43.0/tkn_0.43.0_Linux_${architecture}.tar.gz" "${checksum}" | tar -C /usr/local/bin -xzf - tkn && \
     chmod +x /usr/local/bin/tkn && \
     case $(arch) in \
+        x86_64) architecture="amd64" checksum="07e254cdd378a99d096821441c52a0b6b36d05e180ed52656297ecb66aeb055d792a0f14a27a6323752fef607bec4633ed44a49c6f6fad677a2c3e4d769f947f" ;; \
+        aarch64) architecture="arm64" checksum="2998d68def4d5c74754134660b442c677589200d55eb5d53be44e7244351cea7a4fc9b6ec71ba3e021a6d333420e1422dac5ec28644ad5d0e851c33124063b20" ;; \
+        *) exit 42;; \
+    esac && \
+    /tmp/download-file.sh "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_${architecture}.tar.gz" "${checksum}" | tar -C /usr/local/bin -xzf - --strip-components=2 "gh_2.102.0_linux_${architecture}/bin/gh" && \
+    chmod +x /usr/local/bin/gh && \
+    case $(arch) in \
         x86_64) architecture="amd64" checksum="f58a029ef8dee72f7fcf0345a5731795de0745ee6c955efd24801ced8409395cd2a4dc0ca41663c43231a48e94a5375cd01e63bc37b4557bf708e9ce6703fffa" ;; \
         aarch64) architecture="arm64" checksum="034585fbb3766f34c3cdbc127b145c76904073918e2af76e31a81349aa2c67979e35ab780cc4a1cb1dadc5df04ae3b9c2984c1b382f1cff6b4ee48b560b7f048" ;; \
         *) exit 42;; \
