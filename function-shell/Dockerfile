@@ -1,5 +1,5 @@
 # renovate: datasource=docker packageName=xpkg.upbound.io/crossplane-contrib/function-shell versioning=semver
-FROM xpkg.upbound.io/crossplane-contrib/function-shell:v0.6.0
+FROM xpkg.upbound.io/crossplane-contrib/function-shell:v0.7.0
 
 USER root
 
