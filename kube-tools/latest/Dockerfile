@@ -17,8 +17,6 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     ln -s /usr/local/go/bin/go /usr/local/bin/go && \
     go install github.com/mikefarah/yq/v4@v4.44.3 && \
     mv "$( go env GOPATH )/bin/yq" /usr/local/bin/ && \
-    go install github.com/redhat-openshift-ecosystem/openshift-preflight/cmd/preflight@v1.14.1 && \
-    mv "$( go env GOPATH )/bin/preflight" /usr/local/bin/ && \
     go install github.com/operator-framework/operator-manifest-tools@v0.11.0 && \
     mv "$( go env GOPATH )/bin/operator-manifest-tools" /usr/local/bin/ && \
     mkdir -p /go/src/k8s.io/ && \
@@ -48,6 +46,13 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     esac && \
     /tmp/download-file.sh "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_${architecture}.tar.gz" "${checksum}" | tar -C /usr/local/bin -xzf - --strip-components=2 "gh_2.102.0_linux_${architecture}/bin/gh" && \
     chmod +x /usr/local/bin/gh && \
+    case $(arch) in \
+        x86_64) architecture="amd64" checksum="755631b932bbbc2aab16445d9c5983b3fe9de55695a2f87abea4bad5deda9b716815a2a869978f9311c69ba5f66335366c3b06ec913a9991dc3f4d0f75df5de8" ;; \
+        aarch64) architecture="arm64" checksum="9c8fa36a2b88b704abfa30c58d5e678a5770366b9b2941f930a13da3f93b299cdf24df6f3a832072dcb8c8429e627d51c862cb79c28fd6d2468e8671ee08b8c2" ;; \
+        *) exit 42;; \
+    esac && \
+    /tmp/download-file.sh "https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/1.21.2/preflight-linux-${architecture}" "${checksum}" | cat >/usr/local/bin/preflight && \
+    chmod +x /usr/local/bin/preflight && \
     case $(arch) in \
         x86_64) architecture="amd64" checksum="f58a029ef8dee72f7fcf0345a5731795de0745ee6c955efd24801ced8409395cd2a4dc0ca41663c43231a48e94a5375cd01e63bc37b4557bf708e9ce6703fffa" ;; \
         aarch64) architecture="arm64" checksum="034585fbb3766f34c3cdbc127b145c76904073918e2af76e31a81349aa2c67979e35ab780cc4a1cb1dadc5df04ae3b9c2984c1b382f1cff6b4ee48b560b7f048" ;; \
