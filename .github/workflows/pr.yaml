@@ -14,10 +14,27 @@ jobs:
   images:
     uses: ./.github/workflows/images.yaml
 
+  verify-commits:
+    name: verify-commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          # Without this, the checkout is refs/pull/N/merge, GitHub's test merge of the PR into the
+          # base branch, so HEAD is a merge commit that the contributor never wrote.
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify commits
+        uses: scylladb/scylla-operator/.github/actions/verify-commits@41490e290e7a93886c13bfa746ca5415a06326aa
+
   check-required:
     runs-on: ubuntu-latest
     needs:
     - images
+    - verify-commits
     if: always()
     steps:
     - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
