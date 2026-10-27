@@ -60,6 +60,13 @@ RUN set -euExo pipefail && shopt -s inherit_errexit && \
     esac && \
     /tmp/download-file.sh "https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-${architecture}" "${checksum}" | cat >/usr/local/bin/kind  && \
     chmod +x /usr/local/bin/kind && \
+    case $(arch) in \
+        x86_64) architecture="amd64" checksum="a78d8e7bb31edf78a92036c1f3827c245d994ccfd9a18b48ff87b85e64a3b53f55982784af16df14eb0692051c08dda852f50572509c216ef5b35e6cb94b9eb6" ;; \
+        aarch64) architecture="arm64" checksum="8822ecd31e4e59442a06f8bb621215dcbb96eca6abe4aa7f04345af3be450c72b0baceaca1982556596356adfd9b3236088872543f95f3f19ecb2b6837ea6f50" ;; \
+        *) exit 42;; \
+    esac && \
+    /tmp/download-file.sh "https://get.helm.sh/helm-v3.22.1-linux-${architecture}.tar.gz" "${checksum}" | tar -C /usr/local/bin -xzf - --strip-components=1 "linux-${architecture}/helm" && \
+    chmod +x /usr/local/bin/helm && \
     mkdir -p /go/src/github.com/operator-framework && \
     cd /go/src/github.com/operator-framework && \
     # TODO: replace to upstream once https://github.com/operator-framework/operator-sdk/pull/6978 is released \
