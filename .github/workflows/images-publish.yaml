@@ -29,7 +29,7 @@ jobs:
   manifest:
     name: manifest
     needs: images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: quay.io/scylladb/scylla-operator-images:buildah
       # Even without a build, buildah's overlay storage driver bind-mounts its own home on every store open (pull and
